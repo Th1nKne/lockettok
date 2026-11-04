@@ -19,9 +19,9 @@ jobs:
           mkdir -p $HOME/theos/sdks
           curl -L -o /tmp/sdk.tar.gz https://github.com/theos/sdks/archive/master.tar.gz
           tar -xzf /tmp/sdk.tar.gz -C /tmp
-          cp -r /tmp/sdks-master/*.sdk $HOME/theos/sdks/
+          cp -rf /tmp/sdks-master/iPhoneOS*.sdk $HOME/theos/sdks/
 
-      - name: Build
+      - name: Build Tweak
         run: |
           export THEOS=$HOME/theos
           make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
