@@ -1,0 +1,10 @@
+Package: com.you.lockettok
+Name: LocketTok
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: Dump Locket AppCheck device_token
+Maintainer: you
+Author: you
+Section: Tweaks
+Depends: mobilesubstrate
+RootHideCompatibility: true
