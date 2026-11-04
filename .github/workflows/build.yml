@@ -1,30 +1,18 @@
-name: Build Deb
+name: Build Deb via Docker
 
 on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Theos
+      - name: Build with Theos Docker
         run: |
-          brew install ldid xz
-          git clone --recursive https://github.com/theos/theos.git $HOME/theos
-          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
-          
-      - name: Download iOS SDK
-        run: |
-          mkdir -p $HOME/theos/sdks
-          curl -L -o /tmp/sdks.tar.gz https://github.com/theos/sdks/archive/master.tar.gz
-          tar -xzf /tmp/sdks.tar.gz -C /tmp
-          mv /tmp/sdks-master/*.sdk $HOME/theos/sdks/
-          ls -la $HOME/theos/sdks/
-
-      - name: Build Tweak
-        run: |
-          make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          docker run --rm -v "$PWD":/work -w /work \
+            ghcr.io/theos/theos:latest \
+            bash -c "make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless"
 
       - name: Upload .deb
         uses: actions/upload-artifact@v4
